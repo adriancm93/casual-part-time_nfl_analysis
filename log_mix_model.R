@@ -105,11 +105,25 @@ plot<-merge(est,names,by= 'id',all.x = T,no.dups = T) %>% arrange(estimate) %>% 
 
 plot  %>%
   ggplot(aes(x=factor(Quarterback, level = Quarterback),estimate)) + 
-  geom_point() +
-  geom_linerange(aes(ymin=estimate - 1.96*std.error,
+  geom_point(size=.6) +
+  geom_linerange(size=.4,aes(ymin=estimate - 1.96*std.error,
                      ymax=estimate + 1.96*std.error))+
-  coord_flip()
+  coord_flip() +
+  theme_fivethirtyeight()+
+  labs(y="iLog-Odds of Completion per QB (by how much QB's ability changes the existing odds of completion)",
+       title = 'Individual Log-Odds of Completion per Quartbeack',
+       subtitle = 'This time it can be negative becase it changes existing odds | ABOVE 0 IS POSITIVE CPOE',
+       caption = "Data: nflfastR | Analysis by Adrian Cadena @adrian_cadem" ) +
+  theme(
+    axis.title.y = element_blank(),
+    plot.title = element_text(size=12,family = "Trebuchet MS",color = "grey20",hjust = .5),
+    plot.subtitle = element_text(size=9,family = "Trebuchet MS",color = "grey20",hjust = 0.5),
+    axis.title = element_text(size=8,family = "Trebuchet MS",color = "grey20"),
+    plot.caption = element_text(size=6.5,family = "Trebuchet MS",color = "grey20",hjust = 0),
+    axis.text = element_text(size=7,family = "Trebuchet MS",color = "grey20")
+  )
 
+ggsave('file_name1.png', dpi=1100,width = 16, height = 14, units = "cm") 
 
 plot  %>% filter(last_seas>2018) %>%
   ggplot(aes(x=factor(Quarterback, level = Quarterback),prob)) + 
